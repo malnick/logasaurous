@@ -59,7 +59,11 @@ func (esRequest *ESRequest) makeRequest(c *config.Config) (ESResponse, error) {
 	log.Debugf("Elastic Search Request:\n %s", string(jsonpost))
 
 	// Craft the request URI
-	queryURL := strings.Join([]string{"http://", c.ElasticsearchURL, ":", c.ElasticsearchPort, "/_search?pretty"}, "")
+	requestMethod := "http"
+	if c.EnableSSL {
+		requestMethod := "https"
+	}
+	queryURL := strings.Join([]string{requestMethod, "://", c.ElasticsearchURL, ":", c.ElasticsearchPort, "/_search?pretty"}, "")
 	log.Debug("Query URI: ", queryURL)
 
 	// Make request

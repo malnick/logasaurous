@@ -33,6 +33,7 @@ type Config struct {
 	LogVerbose           bool              `yaml:"log_verbose"`
 	SearchHost           bool              `yaml:"search_host,omitempty"`
 	logaConfigPath       string            `yaml:",omitempty"`
+	EnableSSL            bool              `yaml:"enable_ssl"`
 }
 
 func basicCheckOrExit(err error) {
@@ -53,6 +54,7 @@ func defaultConfig() Config {
 		StartTime:         0,
 		Count:             500,
 		LogVerbose:        false,
+		EnableSSL:         false,
 		logaConfigPath:    "./loga.yaml",
 		ConfDefinedQueries: map[string]string{
 			"example": "foo AND bar",
@@ -99,6 +101,7 @@ func (c *Config) setFlags(fs *flag.FlagSet) {
 	fs.BoolVar(&c.LogVerbose, "v", c.LogVerbose, "Verbose logging option")
 	fs.BoolVar(&c.Highlight, "h", c.Highlight, "Highlight search in output")
 	fs.BoolVar(&c.FlagVersion, "version", false, "Print version and exit")
+	fs.BoolVar(&c.EnableSSL, "enable-ssl", false, "Using HTTPS for elasticsearch request.")
 
 	fs.StringVar(&c.logaConfigPath, "c", c.logaConfigPath, "Path to loga.yaml")
 	fs.StringVar(&c.FlagDefinedQuery, "d", c.FlagDefinedQuery, "Define a lookup on the CLI")
